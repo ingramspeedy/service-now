@@ -1,0 +1,410 @@
+<!DOCTYPE html><html ng-app="dev-studio" ng-controller="Project" lang="en"><title>ServiceNow Studio</title><head><meta http-equiv="X-UA-Compatible" content="IE=Edge"></meta><title ng-bind="pageTitle">ServiceNow Studio</title><script type="text/javascript">(function() {
+					'use strict';
+					var amp = '&'; //ugh
+					var queryStr = window.location.search;
+					var parms = [];
+				
+					if (!queryStr || queryStr.indexOf('sysparm_transaction_scope') === -1)
+						parms.push('sysparm_transaction_scope=adfc6b18db031010b642cc3039961990');
+
+					if (!queryStr || queryStr.indexOf('sysparm_nostack') === -1)
+						parms.push('sysparm_nostack=true');
+
+					if (parms.length)
+						window.location.search += (queryStr.length ? amp : '?') + parms.join(amp);
+				})()</script><link rel="stylesheet" href="styles/heisenberg/heisenberg_all.css?version=9.0.0"></link><link rel="stylesheet" href="styles/heisenberg/source_sans_pro.css?version=9.0.0"></link><link rel="stylesheet" href="styles/dist/common/sn_common.css?version=9.0.0"></link><link rel="stylesheet" href="styles/css_includes_ng_form_elements.css?version=9.0.0"></link><link rel="stylesheet" type="text/css" href="styles/dev-studio.css?version=9.0.0"></link><link rel="stylesheet" type="text/css" href="styles/cn-icons/cn-icons.css"></link></head><body ng-cloak="true" role="application"><nav id="title-menu" disable-right-click="" ng-controller="MenuBar"></nav><nav id="title-nav" class="navbar navbar-default" disable-right-click="" ng-controller="NavBar"></nav><div id="explorer-editor-wrapper"><nav id="app-explorer-pane"><app-explorer></app-explorer></nav><section id="editing-pane"><header id="studio-breadcrumbs" class="breadcrumbs"></header><editor-tabset></editor-tabset></section></div><status-bar></status-bar><iframe style="display: none" height="0" width="0" src="/$createnow_ambclient_iframe.do?sysparm_nostack=true"></iframe><script type="text/javascript">var InitialState = {
+            userId: '6816f79cc0a8016401c5a33be04be441',
+            userPrefs: '[{\"name\":\"ide.open_mode\",\"value\":\"tab\",\"id\":\"7c909b8037002200612747efbe41f102\",\"label\":\"Open Mode\",\"type\":\"choice\",\"category\":\"IDE\",\"enabled\":{},\"choices\":[{\"label\":\"Tab\",\"value\":\"tab\"},{\"label\":\"Window\",\"value\":\"window\"}]},{\"name\":\"status_bar.show_files\",\"value\":\"true\",\"id\":\"a3325b8037002200612747efbe41f1e7\",\"label\":\"Show File Info\",\"type\":\"boolean\",\"category\":\"Status Bar\",\"enabled\":{},\"choices\":[]},{\"name\":\"status_bar.show_vcs\",\"value\":\"true\",\"id\":\"10b15b8037002200612747efbe41f1b6\",\"label\":\"Show Source Control Status\",\"type\":\"boolean\",\"category\":\"Status Bar\",\"enabled\":{},\"choices\":[]},{\"name\":\"status_bar.show_component\",\"value\":\"true\",\"id\":\"a8e0c40637002200612747efbe41f1d7\",\"label\":\"Show Status Bar\",\"type\":\"boolean\",\"category\":\"Status Bar\",\"enabled\":{},\"choices\":[]}]',
+            userToken: 'ff42ab90db031010b642cc3039961960a6ce991f8e3f224b582b469da994c613fbc0332a'
+        };</script><script type="text/javascript" src="/scripts/lib/jquery/jquery-2.1.jsx?v=01-12-2020_1944"></script><script type="text/javascript" src="scripts/dev-studio/lib/angular/angular.min.js?sysparm_substitute=false&amp;version=9.0.0"></script><script type="text/javascript" src="scripts/dev-studio/lib/select2/select2.js?sysparm_substitute=false&amp;version=9.0.0"></script><script type="text/javascript" src="scripts/dev-studio-bundle.js?sysparm_substitute=false&amp;version=9.0.0"></script><script type="text/javascript">
+		"use strict";
+		angular.module('ds.setup').config(function(ProjectConfigProvider) {
+			// Configure default project configuration settings
+			ProjectConfigProvider.set('CLIENT_SIDE_VERSION', '9.0.0');
+			ProjectConfigProvider.set('SERVER_SIDE_VERSION', '9.0.0');
+			ProjectConfigProvider.set('USER_ID', '6816f79cc0a8016401c5a33be04be441');
+			ProjectConfigProvider.set('USER_NAME', 'Ronald Ingram');
+			ProjectConfigProvider.set('APP_SCOPE', 'x_521577_hello_wld');
+			ProjectConfigProvider.set('APP_ID', 'adfc6b18db031010b642cc3039961990');
+			ProjectConfigProvider.set('APP_NAME', undefined);
+			ProjectConfigProvider.set('PUBLISHABLE', false);
+			ProjectConfigProvider.set('I18N_DEBUG', false);
+
+			ProjectConfigProvider.set('CK', 'ff42ab90db031010b642cc3039961960a6ce991f8e3f224b582b469da994c613fbc0332a');
+
+			ProjectConfigProvider.set('MAX_SEARCH_RESULTS', 500);
+			ProjectConfigProvider.set('SOURCE_CONTROL_ENABLED', true);
+			ProjectConfigProvider.set('DEBUGGER_ENABLED', true);
+			ProjectConfigProvider.set('DD_USER_ADMIN_ENABLED', true);
+			ProjectConfigProvider.set('CAN_ACCESS_SOURCE_CONTROL', true && !false);
+			ProjectConfigProvider.set('CAN_MANAGE_USERS', true);
+			ProjectConfigProvider.set('CAN_PUBLISH_APP', true);
+			ProjectConfigProvider.set('CAN_CREATE_APP', true || (true && true));
+			ProjectConfigProvider.set('USER_CAN_DEBUG', true);
+			ProjectConfigProvider.set('GLOBAL_FILES_ENABLED', true);
+			ProjectConfigProvider.set('CAN_EDIT_IN_STUDIO', false);
+			ProjectConfigProvider.set('IS_INSTALLED_APP', false);
+			ProjectConfigProvider.set('APP_VERSION', '1.0.0');
+			ProjectConfigProvider.set('CAN_READ_UPDATE_SETS', true);
+			ProjectConfigProvider.set('USE_LEGACY_APP_CREATOR', false);
+			ProjectConfigProvider.set('GAC_URL', '/$sn_guided_application_creator.do?sysparm_nostack=true&sysparm_parent_app=com.glide.dev-studio');
+			ProjectConfigProvider.set('VCS_ALLOW_SELECTIVE_COMMIT', true);
+            ProjectConfigProvider.set('AC_WAIT_TIME', 250);
+		});
+	</script>
+	<script type="text/javascript">
+		angular.module('ds.i18n').config(function($translateProvider) {
+			"use strict";
+
+			var translations = {
+    "AMB Client not found": "AMB Client not found",
+    "Close": "Close",
+    "Create Application": "Create Application",
+    "Minimize Pane": "Minimize Pane",
+    "Application Explorer Tree": "Application Explorer Tree",
+    "Maximize Pane": "Maximize Pane",
+    "Application Explorer": "Application Explorer",
+    "The application explorer contains your application structure and files.": "The application explorer contains your application structure and files.",
+    "Create Application File": "Create Application File",
+    "You do not have sufficient privileges to create any new files in this application.  Please contact your administrator for assistance.": "You do not have sufficient privileges to create any new files in this application.  Please contact your administrator for assistance.",
+    "Create": "Create",
+    "Next": "Next",
+    "CNS:Go To": "Go To",
+    "Search": "Search",
+    "My Application": "My Application",
+    "CNS:No Matches": "No Matches",
+    "File": "File",
+    "Create File": "Create File",
+    "Add Existing Files": "Add Existing Files",
+    "Remove Files": "Remove Files",
+    "Import From Source Control": "Import From Source Control",
+    "Publish": "Publish",
+    "Settings": "Settings",
+    "Switch": "Switch",
+    "Manage Developers": "Manage Developers",
+    "Launch Script Debugger": "Launch Script Debugger",
+    "Source Control": "Source Control",
+    "Link To Source Control": "Link To Source Control",
+    "Edit Repository Configuration": "Edit Repository Configuration",
+    "Apply Remote Changes": "Apply Remote Changes",
+    "Commit Changes": "Commit Changes",
+    "Stash Local Changes": "Stash Local Changes",
+    "Switch Branch": "Switch Branch",
+    "Create Branch": "Create Branch",
+    "Create Tag": "Create Tag",
+    "Manage Stashes": "Manage Stashes",
+    "View History": "View History",
+    "Window": "Window",
+    "Close Current Tab": "Close Current Tab",
+    "Close All Tabs": "Close All Tabs",
+    "Close Other Tabs": "Close Other Tabs",
+    "Close Unmodified Tabs": "Close Unmodified Tabs",
+    "Code Search": "Code Search",
+    "Data Model": "Data Model",
+    "Table": "Table",
+    "You are not authorized to publish this application. {message}": "You are not authorized to publish this application. {message}",
+    "Did not receive publishing information successfully. {message}": "Did not receive publishing information successfully. {message}",
+    "This application is not publishable.  It is not a custom application.": "This application is not publishable.  It is not a custom application.",
+    "Missing required application id.": "Missing required application id.",
+    "Vendor information was not found, upload function is disabled for this instance.": "Vendor information was not found, upload function is disabled for this instance.",
+    "Internal and Store Uploading has been disabled. Please contact your instance administrator.": "Internal and Store Uploading has been disabled. Please contact your instance administrator.",
+    "Publish to store is disabled for your account. Please contact your administrator.": "Publish to store is disabled for your account. Please contact your administrator.",
+    "Publish to store is disabled for this instance. Please contact your administrator.": "Publish to store is disabled for this instance. Please contact your administrator.",
+    "Publish to application repository is disabled for your account. Please contact your administrator.": "Publish to application repository is disabled for your account. Please contact your administrator.",
+    "Publish to your application repository is disabled for this instance. Please contact your administrator.": "Publish to your application repository is disabled for this instance. Please contact your administrator.",
+    "Commiting Local Changes To Source Control": "Commiting Local Changes To Source Control",
+    "Published {version}": "Published {version}",
+    "Creating a Source Control Tag": "Creating a Source Control Tag",
+    "Publishing to ServiceNow Store": "Publishing to ServiceNow Store",
+    "Unknown error. Please try again or contact the administrator.": "Unknown error. Please try again or contact the administrator.",
+    "OK": "OK",
+    "Cancel": "Cancel",
+    "Continue": "Continue",
+    "Where to Publish": "Where to Publish",
+    "App Repo": "App Repo",
+    "My Application Repository": "My Application Repository",
+    "Make the application available to my instances": "Make the application available to my instances",
+    "ServiceNow Store": "ServiceNow Store",
+    "Submit this application to ServiceNow Store for review": "Submit this application to ServiceNow Store for review",
+    "Application Details": "Application Details",
+    "Company": "Company",
+    "Vendor Prefix": "Vendor Prefix",
+    "App Name": "App Name",
+    "Version": "Version",
+    "Dev Notes": "Dev Notes",
+    "Login with your HI credentials": "Login with your HI credentials",
+    "Login": "Login",
+    "Password": "Password",
+    "Submit": "Submit",
+    "Upload Successful": "Upload Successful",
+    "{appName} was successfully uploaded": "{appName} was successfully uploaded",
+    "Upload Failed": "Upload Failed",
+    "Could not upload application": "Could not upload application",
+    "Receiving progress information was unsuccessful: {message}": "Receiving progress information was unsuccessful: {message}",
+    "complete": "complete",
+    "The application can be edited at": "The application can be edited at",
+    "Previous Step": "Previous Step",
+    "false": "false",
+    "Invalid URL": "Invalid URL",
+    "Search ({searchTerm})": "Search ({searchTerm})",
+    "Search Term...": "Search Term...",
+    "CNS:results": "results",
+    "Line": "Line",
+    "All Applications": "All Applications",
+    "CNS:result": "result",
+    "Select a table to search... (optional)": "Select a table to search... (optional)",
+    "Search in all applications": "Search in all applications",
+    "for": "for",
+    "CNS:in": "in",
+    "Search cancelled because too many results were found.": "Search cancelled because too many results were found.",
+    "In Progress": "In progress",
+    "No Results Found": "No Results Found",
+    "You do not have any applications yet. Why not create a new one?": "You do not have any applications yet. Why not create a new one?",
+    "You are already editing your only application.": "You are already editing your only application.",
+    "Updated": "updated",
+    "Please select an application to edit": "Please select an application to edit",
+    "Loading...": "Loading...",
+    "Studio Upgrade in Progress": "Studio Upgrade in Progress",
+    "Studio is temporarily unavailable due to a system upgrade. Please check back shortly.": "Studio is temporarily unavailable due to a system upgrade. Please check back shortly.",
+    "Not Linked to Source Control": "Not Linked to Source Control",
+    "Linked: Both remote and local changes exist": "Linked: Both remote and local changes exist",
+    "Linked: Local changes exist": "Linked: Local changes exist",
+    "Linked: Remote changes exist": "Linked: Remote changes exist",
+    "Linked: No local or remote changes": "Linked: No local or remote changes",
+    "Unlinked": "Unlinked",
+    "files": "Files",
+    "unsaved": "unsaved",
+    "User Preferences": "User Preferences",
+    "Close Dialog": "Close Dialog",
+    "Ok": "OK",
+    "Try Again. If the problem continues, please contact your administrator.": "Try Again. If the problem continues, please contact your administrator.",
+    "Warning": "Warning",
+    "Success with warning": "Success with warning",
+    "Success": "Success",
+    "Failure": "Failure",
+    "Back": "Back",
+    "View Details": "View Details",
+    "Select Application": "Select Application",
+    "Apply Stashed Changes": "Apply Stashed Changes",
+    "No matching tables": "No matching tables",
+    "A table in your scope is required for this record type. Use the Back button to return to the previous selection screen": "A table in your scope is required for this record type. Use the Back button to return to the previous selection screen",
+    "My Items": "My Items",
+    "Mobile Data Items": "Mobile Data Items",
+    "Filter Results": "Filter Results",
+    "My Tables": "My Tables",
+    "Other Tables": "Other Tables",
+    "New": "New",
+    "List Layout": "List Layout",
+    "Form Layout": "Form Layout",
+    "Related List": "Related List",
+    "Schema Map": "Schema map",
+    "Close {title}": "Close {title}",
+    "{title} has changes.  Are you sure you wish to close it?": "{title} has changes.  Are you sure you wish to close it?",
+    "New tab": "New Tab",
+    "New Topic": "New Topic",
+    "{tabTitle} of type {tabSubTitle}": "{tabTitle} of type {tabSubTitle}",
+    "CNS:Welcome to": "Welcome to",
+    "Studio": "Studio",
+    "Keyboard Shortcuts": "Keyboard shortcuts",
+    "Open any file in your application.": "Open any file in your application.",
+    "CNS:Create New": "Create New",
+    "Create a new file of any type.": "Create a new file of any type.",
+    "Search files in any of your applications.": "Search files in any of your applications.",
+    "You have unsaved changes. Do you want to close without saving?": "You have unsaved changes. Do you want to close without saving?",
+    "The file": "The file",
+    "Application Settings": "Application Settings",
+    "CNS:New tab": "New tab",
+    "Import Application": "Import Application",
+    "You have not created any applications. Why not create one? Alternatively, you can import a valid ServiceNow application from a git repository.": "You have not created any applications. Why not create one? Alternatively, you can import a valid ServiceNow application from a git repository.",
+    "You don’t have the required user role to view or edit the applications. Contact admin for the required permissions.": "You don’t have the required user role to view or edit the applications. Contact admin for the required permissions.",
+    "Applications": "Applications",
+    "Changed Files": "Changed Files",
+    "Applying remote changes was successful.": "Applying remote changes was successful.",
+    "Applying remote changes has failed.": "Applying remote changes has failed.",
+    "Would you like to apply changes from the remote repository to the current application {appName}?": "Would you like to apply changes from the remote repository to the current application {appName}?",
+    "CNS:stash local changes": "Performing this action saves any changed application files, pulls the latest version of application files from the repository, and then applies them to this instance. When complete, your application file versions will match those in the repository, and you will have a stash of local changes you can recover and apply at a later time.",
+    "{infoMessage} You have the option to save (stash) or discard any local changes that have not yet been committed to your repository.": "{infoMessage} You have the option to save (stash) or discard any local changes that have not yet been committed to your repository.",
+    "Creating a branch will result in a new branch being created in the remote repository that is configured for this application.": "Creating a branch will result in a new branch being created in the remote repository that is configured for this application.",
+    "This operation creates a new branch based on a tagged revision of your application.  If you do not stash or commit your local changes beforehand, they will be lost.": "This operation creates a new branch based on a tagged revision of your application.  If you do not stash or commit your local changes beforehand, they will be lost.",
+    "Creating the branch was successful.": "Creating the branch was successful.",
+    "Creating the branch has failed.": "Creating the branch has failed.",
+    "Switching branches was successful.": "Switching branches was successful.",
+    "Switching branches has failed.": "Switching branches has failed.",
+    "Switching to an alternate branch will result in the current application files being updated on this instance to reflect the state of those files in the alternate branch.": "Switching to an alternate branch will result in the current application files being updated on this instance to reflect the state of those files in the alternate branch.",
+    "You can save or discard any local changes that have not yet been committed to your repository.": "You can save or discard any local changes that have not yet been committed to your repository.",
+    "You do not have any local changes to stash. Make a change by creating a new application file.": "You do not have any local changes to stash. Make a change by creating a new application file.",
+    "Discard local changes": "Discard local changes",
+    "Stash local changes": "Stash local changes",
+    "If you choose to discard, you will not be able to recover these files.": "If you choose to discard, you will not be able to recover these files.",
+    "Branch Name": "Branch Name",
+    "Branch name required.": "Branch name required.",
+    "Branch name must be less than 250 characters.": "Branch name must be less than 250 characters.",
+    "Create from Tag": "Create from Tag",
+    "Select files to commit to source control for {appName}": "Select files to commit to source control for {appName}",
+    "Confirm files to commit to source control for {appName}": "Confirm files to commit to source control for {appName}",
+    "Commit Files ({fileCount})": "Commit Files ({fileCount})",
+    "Changed files": "Changed files",
+    "All Update Sets": "All Update Sets",
+    "Every file is shown only in its latest update set. To find a file and its latest update set use the filter option from": "Every file is shown only in its latest update set. To find a file and its latest update set use the filter option from",
+    "Selected files": "Selected files",
+    "Commit Files": "Commit Files",
+    "Commit comment": "Commit comment",
+    "CNS:commit changes": "Commit changes will result in changes to application files in your ServiceNow instance being included in a commit made to the remote repository you have configured for your application. Best practice is to make small logical commits and to include a commit message that clearly explains your changes.",
+    "Recent changes were committed successfully.": "Recent changes were committed successfully.",
+    "Recent changes failed to commit.": "Recent changes failed to commit.",
+    "Compare with committed": "Compare with committed",
+    "Link to Source Control": "Link to Source Control",
+    "This application was linked to source control successfully.": "This application was linked to source control successfully.",
+    "Could not link to source control.": "Could not link to source control.",
+    "Linking your application to source control will enable integration with a source control system. Provide the URL of a GIT repository and credentials for a user that has permission to read and write to the GIT repository.": "Linking your application to source control will enable integration with a source control system. Provide the URL of a GIT repository and credentials for a user that has permission to read and write to the GIT repository.",
+    "WARNING: Linking an application to source control deletes its completed update sets and customer update records. Export any update sets you want to preserve prior to linking.": "WARNING: Linking an application to source control deletes its completed update sets and customer update records. Export any update sets you want to preserve prior to linking.",
+    "Commit Message": "Commit Message",
+    "Commit message is a required field.": "Commit message is a required field.",
+    "Commit comment is a required field.": "Commit comment is a required field.",
+    "Ascending": "Ascending",
+    "Descending": "Descending",
+    "No results were found.": "No results were found.",
+    "Commit Details": "Commit Details",
+    "Committer:": "Committer:",
+    "Date:": "Date:",
+    "Message:": "Message:",
+    "Files": "Files",
+    "History": "History",
+    "Branch history was unable to be loaded.": "Branch history was unable to be loaded.",
+    "Import from source control was successful.": "Import from source control was successful.",
+    "Importing from source control has failed.": "Importing from source control has failed.",
+    "CNS:import application notification": "Importing an application from source control will result in a new application being created in this ServiceNow instance based on the remote repository you specify. The account credentials you supply must have read access to the remote repository. The remote repository you specify must contain a valid ServiceNow application. For more information on requirements refer to ServiceNow product documentation.",
+    "Import": "Import",
+    "Name": "Name",
+    "Scope": "Scope",
+    "Menu": "Menu",
+    "User Role": "User Role",
+    "Create Table": "Create Table",
+    "Use Source Control": "Use Source Control",
+    "Label": "Label",
+    "Module": "Module",
+    "Extends Table": "Extends Table",
+    "Extensible": "Extensible",
+    "Live Feed": "Live Feed",
+    "Auto-number": "Auto-number",
+    "Prefix": "Prefix",
+    "Number": "Number",
+    "Number of Digits": "Number of Digits",
+    "URL": "URL",
+    "User Name": "User name",
+    "Short Description": "Short Description",
+    "CNS:merge conflict": "Conflicts exist between the most recent version of the application files applied from the repository and the stashed version. Resolve conflicts by choosing to either take the stashed versions, discard the stashed version, or manually resolve the conflicts.",
+    "Resolve Conflicts": "Resolve Conflicts",
+    "Stashed changes were applied successfully.": "Stashed changes were applied successfully.",
+    "Stashed changes failed to merge.": "Stashed changes failed to merge.",
+    "Editing the repository configuration was successful.": "Editing the repository configuration was successful.",
+    "Editing the repository configuration was unsuccessful.": "Editing the repository configuration was unsuccessful.",
+    "Apply": "Apply",
+    "Delete": "Delete",
+    "Stashes": "Stashes",
+    "Applying the stash was successful.": "Applying the stash was successful.",
+    "Applying the stash has failed.": "Applying the stash has failed.",
+    "Take Stashed Changes will apply the stashed version of the conflicting file to your application.": "Take Stashed Changes will apply the stashed version of the conflicting file to your application.",
+    "Discard Stashed Changes will apply the most recent version of the application file pulled from the repository to your application.": "Discard Stashed Changes will apply the most recent version of the application file pulled from the repository to your application.",
+    "Manually Apply will allow you to view the differences between the conflicting versions and make changes.": "Manually Apply will allow you to view the differences between the conflicting versions and make changes.",
+    "Conflicting Stashed Files": "Conflicting Stashed Files",
+    "Filtered Results": "Filtered Results",
+    "Sorted descending": "Sorted descending",
+    "Sorted ascending": "Sorted ascending",
+    "Type": "Type",
+    "State": "State",
+    "Status": "Status",
+    "Action": "Action",
+    "Select an Action": "Select an Action",
+    "Take Stashed Changes": "Take Stashed Changes",
+    "Discard Stashed Changes": "Discard Stashed Changes",
+    "Manually Apply": "Manually Apply",
+    "For All Selected": "For All Selected",
+    "Conflict Unresolved": "Conflict Unresolved",
+    "Conflict Resolved": "Conflict Resolved",
+    "Save": "Save",
+    "Network protocol": "Network protocol",
+    "Protocol field is required.": "Protocol field is required.",
+    "URL field is required.": "URL field is required.",
+    "Branch": "Branch",
+    "Branch name must be less than 250 characters": "Branch name must be less than 250 characters",
+    "Use of the default naming convention is strongly encouraged": "Use of the default naming convention is strongly encouraged",
+    "MID Server": "MID Server",
+    "User name field is required.": "User name field is required.",
+    "Password field is required.": "Password field is required.",
+    "MID Server Name": "MID Server Name",
+    "MID Server field is required.": "MID Server field is required.",
+    "Credential": "Credential",
+    "Credential field is required.": "Credential field is required.",
+    "No stashes to display.": "No stashes to display.",
+    "Are you sure you want to delete this stash? You will not be able to recover these files.": "Are you sure you want to delete this stash? You will not be able to recover these files.",
+    "Delete Stash": "Delete Stash",
+    "Creating the tag was successful.": "Creating the tag was successful.",
+    "Creating the tag has failed.": "Creating the tag has failed.",
+    "Creating a tag will result in a new tag being created in the remote repository that is configured for this application. Local changes will not be included.": "Creating a tag will result in a new tag being created in the remote repository that is configured for this application. Local changes will not be included.",
+    "Loading": "Loading",
+    "Select all": "Select All",
+    "Select record for action: {ariaMsg}": "Select record for action: {ariaMsg}",
+    "Sort {fieldName} descending": "Sort {fieldName} descending",
+    "Sort {fieldName} ascending": "Sort {fieldName} ascending",
+    "File name": "File name",
+    "File type": "File type",
+    "Updated date": "Updated date",
+    "Updated by": "Updated by",
+    "Update set": "Update Set",
+    "Compare": "Compare",
+    "Date Updated": "Date Updated",
+    "Updated By": "Updated by",
+    "Application": "Application",
+    "Vendor": "Vendor",
+    "Created On": "Created on",
+    "Updated On": "Updated On",
+    "Description": "Description",
+    "{tableTitle} table sorted by {fieldDisplayValue}: descending order": "{tableTitle} table sorted by {fieldDisplayValue}: descending order",
+    "{tableTitle} table sorted by {fieldDisplayValue}: ascending order": "{tableTitle} table sorted by {fieldDisplayValue}: ascending order",
+    "Tag Name": "Tag Name",
+    "Tag name required": "Tag name required",
+    "Tag name must be less than 250 characters": "Tag name must be less than 250 characters",
+    "{{modalTitle}}": "{{modalTitle}}",
+    "User Actions": "User Actions"
+};
+
+			$translateProvider
+					.translations('en', translations)
+					.preferredLanguage('en');
+		});
+	</script><script type="text/javascript">(function () {
+					"use strict";
+
+					function safeCall(target, fn) {
+						var args = Array.prototype.slice.call(arguments, 2);
+
+						if (target && target[fn]) {
+							try {
+								target[fn].call(target, target[fn], args);
+							}
+							catch(e) {
+								console.log("Failed to invoke " + fn, e);
+							}
+						}
+					}
+
+					// Kick off in the background, so we don't hang if someone listening to us happens
+					// to take a long time
+					setTimeout(function() {
+						if (window.opener && window.opener.top)	{
+							try {
+								safeCall(window.opener.top.g_application_picker, 'fillApplications');
+								safeCall(window.opener.top.g_update_set_picker, 'fillUpdateSets');
+
+								if (window.opener.top.NOW && window.opener.top.NOW.CustomEvent)
+									safeCall(window.opener.top.NOW.CustomEvent, 'fire', 'glide:ui_notification.application_change');
+							}
+							catch (e) {
+								// This can occur for permission failures when the opener has reloaded/changed and we
+								// no longer have access to its contents
+								console.log("Failed to update app picker", e);
+							}
+						}
+					}, 0);
+				}());</script></body></html>
